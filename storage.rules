@@ -1,0 +1,51 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Deny all access by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // Uploaded videos: authenticated owner only, video/* MIME type, max 100 MB
+    match /videos/{uid}/{videoId}/{fileName} {
+      allow read: if true;
+      allow create, update: if isOwner(uid)
+        && request.resource != null
+        && (
+          (fileName.matches('video\\..*')
+            && request.resource.size <= 100 * 1024 * 1024
+            && request.resource.contentType.matches('video/.*'))
+          ||
+          (fileName.matches('thumb\\..*')
+            && request.resource.size <= 10 * 1024 * 1024
+            && request.resource.contentType.matches('image/.*'))
+        );
+      allow delete: if isOwner(uid);
+    }
+
+    // User profile avatars and channel banners: authenticated owner only, image/*, max 10 MB
+    match /users/{uid}/{fileName} {
+      allow read: if true;
+      allow create, update: if isOwner(uid)
+        && request.resource != null
+        && request.resource.size <= 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+      allow delete: if isOwner(uid);
+    }
+
+    // Community post images: authenticated owner only, image/*, max 10 MB
+    match /posts/{uid}/{postId}/{fileName} {
+      allow read: if true;
+      allow create, update: if isOwner(uid)
+        && request.resource != null
+        && request.resource.size <= 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+      allow delete: if isOwner(uid);
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "GLASYER",
+  "description": "GLASYER — हिंदी में मोबाइल-फर्स्ट वीडियो-शेयरिंग, शॉर्ट्स, लाइव स्ट्रीमिंग और कम्युनिटी सोशल मीडिया ऐप।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

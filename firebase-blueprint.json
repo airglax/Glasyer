@@ -1,0 +1,305 @@
+{
+  "entities": {
+    "UserChannel": {
+      "title": "UserChannel",
+      "description": "Public creator channel profile without PII.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Firebase Auth UID" },
+        "username": { "type": "string", "description": "Unique handle without spaces" },
+        "displayName": { "type": "string", "description": "Channel display name" },
+        "photoUrl": { "type": "string", "description": "Avatar Firebase Storage URL" },
+        "bannerUrl": { "type": "string", "description": "Channel banner Firebase Storage URL" },
+        "bio": { "type": "string", "description": "Short channel bio" },
+        "subscriberCount": { "type": "integer", "description": "Total subscribers" },
+        "verified": { "type": "boolean", "description": "Verified badge flag (server-controlled)" },
+        "publicChannel": { "type": "boolean", "description": "Whether channel is publicly discoverable" },
+        "onboardingDone": { "type": "boolean", "description": "First-time profile setup completed" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on update" }
+      },
+      "required": ["userId", "username", "displayName", "photoUrl", "bannerUrl", "bio", "subscriberCount", "verified", "publicChannel", "onboardingDone", "createdAt", "updatedAt"]
+    },
+    "UserSettings": {
+      "title": "UserSettings",
+      "description": "Private user app settings.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "themeMode": { "type": "string", "enum": ["system", "dark", "light"] },
+        "language": { "type": "string", "enum": ["hi", "en"] },
+        "autoplay": { "type": "boolean" },
+        "playbackQuality": { "type": "string", "enum": ["auto", "1080p", "720p", "480p", "360p"] },
+        "restrictedMode": { "type": "boolean" },
+        "dataSaver": { "type": "boolean" },
+        "historyPaused": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "themeMode", "language", "autoplay", "playbackQuality", "restrictedMode", "dataSaver", "historyPaused", "updatedAt"]
+    },
+    "BlockedUser": {
+      "title": "BlockedUser",
+      "description": "User blocked by current user.",
+      "type": "object",
+      "properties": {
+        "blockedUserId": { "type": "string" },
+        "blockedName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["blockedUserId", "blockedName", "createdAt"]
+    },
+    "VideoItem": {
+      "title": "VideoItem",
+      "description": "Real user-uploaded video, short, or live stream metadata.",
+      "type": "object",
+      "properties": {
+        "videoId": { "type": "string" },
+        "ownerUid": { "type": "string" },
+        "channelName": { "type": "string" },
+        "channelAvatar": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "tags": { "type": "array" },
+        "category": { "type": "string" },
+        "videoType": { "type": "string", "enum": ["video", "short", "live"] },
+        "visibility": { "type": "string", "enum": ["public", "unlisted", "private"] },
+        "videoUrl": { "type": "string" },
+        "thumbnailUrl": { "type": "string" },
+        "duration": { "type": "integer" },
+        "durationLabel": { "type": "string" },
+        "viewsCount": { "type": "integer" },
+        "likesCount": { "type": "integer" },
+        "dislikesCount": { "type": "integer" },
+        "commentsCount": { "type": "integer" },
+        "viewerCount": { "type": "integer" },
+        "commentsEnabled": { "type": "boolean" },
+        "ageRestricted": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["videoId", "ownerUid", "channelName", "channelAvatar", "title", "description", "tags", "category", "videoType", "visibility", "videoUrl", "thumbnailUrl", "duration", "durationLabel", "viewsCount", "likesCount", "dislikesCount", "commentsCount", "viewerCount", "commentsEnabled", "ageRestricted", "createdAt", "updatedAt"]
+    },
+    "VideoComment": {
+      "title": "VideoComment",
+      "description": "Threaded comment on a video.",
+      "type": "object",
+      "properties": {
+        "videoId": { "type": "string" },
+        "videoOwnerId": { "type": "string" },
+        "videoVisibility": { "type": "string", "enum": ["public", "unlisted", "private"] },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorAvatar": { "type": "string" },
+        "text": { "type": "string" },
+        "parentId": { "type": "string" },
+        "likesCount": { "type": "integer" },
+        "pinned": { "type": "boolean" },
+        "creatorHearted": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["videoId", "videoOwnerId", "videoVisibility", "authorId", "authorName", "authorAvatar", "text", "parentId", "likesCount", "pinned", "creatorHearted", "createdAt", "updatedAt"]
+    },
+    "Subscription": {
+      "title": "Subscription",
+      "description": "User subscription to a creator channel.",
+      "type": "object",
+      "properties": {
+        "subscriberId": { "type": "string" },
+        "channelId": { "type": "string" },
+        "channelName": { "type": "string" },
+        "channelAvatar": { "type": "string" },
+        "notifyMode": { "type": "string", "enum": ["all", "personalized", "off"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["subscriberId", "channelId", "channelName", "channelAvatar", "notifyMode", "createdAt", "updatedAt"]
+    },
+    "LikeRecord": {
+      "title": "LikeRecord",
+      "description": "User reaction on a video, post, or comment.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "targetId": { "type": "string" },
+        "targetType": { "type": "string", "enum": ["video", "post", "comment"] },
+        "reaction": { "type": "string", "enum": ["like", "dislike"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "targetId", "targetType", "reaction", "createdAt", "updatedAt"]
+    },
+    "Playlist": {
+      "title": "Playlist",
+      "description": "User-created or Watch Later playlist.",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "visibility": { "type": "string", "enum": ["public", "private"] },
+        "videoIds": { "type": "array" },
+        "systemType": { "type": "string", "enum": ["custom", "watch_later"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "title", "description", "visibility", "videoIds", "systemType", "createdAt", "updatedAt"]
+    },
+    "CommunityPost": {
+      "title": "CommunityPost",
+      "description": "Creator community post with text, images, and poll.",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorAvatar": { "type": "string" },
+        "text": { "type": "string" },
+        "imageUrls": { "type": "array" },
+        "pollOptions": { "type": "array" },
+        "pollVotes": { "type": "array" },
+        "likesCount": { "type": "integer" },
+        "commentsCount": { "type": "integer" },
+        "visibility": { "type": "string", "enum": ["public"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorName", "authorAvatar", "text", "imageUrls", "pollOptions", "pollVotes", "likesCount", "commentsCount", "visibility", "createdAt", "updatedAt"]
+    },
+    "PostComment": {
+      "title": "PostComment",
+      "description": "Comment on a community post.",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "postVisibility": { "type": "string", "enum": ["public"] },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "postVisibility", "authorId", "authorName", "text", "createdAt"]
+    },
+    "LiveChatMessage": {
+      "title": "LiveChatMessage",
+      "description": "Real-time live stream chat and super-chat message.",
+      "type": "object",
+      "properties": {
+        "videoId": { "type": "string" },
+        "videoOwnerId": { "type": "string" },
+        "roomPublic": { "type": "boolean" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderAvatar": { "type": "string" },
+        "message": { "type": "string" },
+        "superChatAmount": { "type": "integer" },
+        "highlighted": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["videoId", "videoOwnerId", "roomPublic", "senderId", "senderName", "senderAvatar", "message", "superChatAmount", "highlighted", "createdAt"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "In-app notification for uploads, replies, likes, or live streams.",
+      "type": "object",
+      "properties": {
+        "recipientId": { "type": "string" },
+        "actorId": { "type": "string" },
+        "actorName": { "type": "string" },
+        "type": { "type": "string", "enum": ["upload", "reply", "like", "live"] },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "targetId": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["recipientId", "actorId", "actorName", "type", "title", "body", "targetId", "read", "createdAt"]
+    },
+    "WatchHistoryEntry": {
+      "title": "WatchHistoryEntry",
+      "description": "User watch history record.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "videoId": { "type": "string" },
+        "videoTitle": { "type": "string" },
+        "channelName": { "type": "string" },
+        "thumbnailUrl": { "type": "string" },
+        "durationLabel": { "type": "string" },
+        "watchedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "videoId", "videoTitle", "channelName", "thumbnailUrl", "durationLabel", "watchedAt"]
+    },
+    "ModerationReport": {
+      "title": "ModerationReport",
+      "description": "Report filed by a user against a video, comment, or user.",
+      "type": "object",
+      "properties": {
+        "reporterId": { "type": "string" },
+        "targetId": { "type": "string" },
+        "targetType": { "type": "string", "enum": ["video", "comment", "user"] },
+        "reason": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "reviewed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["reporterId", "targetId", "targetType", "reason", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserChannel" },
+      "description": "Public channel profiles."
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": { "$ref": "#/entities/UserSettings" },
+      "description": "Owner-only private user preferences."
+    },
+    "/users/{userId}/blocked/{blockedUserId}": {
+      "schema": { "$ref": "#/entities/BlockedUser" },
+      "description": "Owner-only blocked creators list."
+    },
+    "/videos/{videoId}": {
+      "schema": { "$ref": "#/entities/VideoItem" },
+      "description": "User-uploaded Videos, Shorts, and Live streams."
+    },
+    "/videos/{videoId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/VideoComment" },
+      "description": "Threaded comments on videos."
+    },
+    "/subscriptions/{subId}": {
+      "schema": { "$ref": "#/entities/Subscription" },
+      "description": "Channel subscriptions and notification preferences."
+    },
+    "/likes/{likeId}": {
+      "schema": { "$ref": "#/entities/LikeRecord" },
+      "description": "Likes and dislikes per user and target."
+    },
+    "/playlists/{playlistId}": {
+      "schema": { "$ref": "#/entities/Playlist" },
+      "description": "User playlists including Watch Later."
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/CommunityPost" },
+      "description": "Creator community posts and polls."
+    },
+    "/posts/{postId}/postComments/{commentId}": {
+      "schema": { "$ref": "#/entities/PostComment" },
+      "description": "Comments on community posts."
+    },
+    "/liveChats/{chatId}": {
+      "schema": { "$ref": "#/entities/LiveChatMessage" },
+      "description": "Real-time live chat and super-chat messages."
+    },
+    "/notifications/{notifId}": {
+      "schema": { "$ref": "#/entities/NotificationItem" },
+      "description": "In-app notifications per recipient."
+    },
+    "/history/{historyId}": {
+      "schema": { "$ref": "#/entities/WatchHistoryEntry" },
+      "description": "Per-user watch history."
+    },
+    "/reports/{reportId}": {
+      "schema": { "$ref": "#/entities/ModerationReport" },
+      "description": "User-submitted moderation reports."
+    }
+  }
+}
